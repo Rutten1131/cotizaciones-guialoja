@@ -46,11 +46,12 @@ export async function POST(req: Request) {
         codigo_unico, vertical, ecosistema_portal, es_piloto, nombre_comercial,
         ruc_cedula, representante_legal, direccion, canton, whatsapp, email,
         modalidad_plan, subtotal, iva, recargo_pasarela, total_cobrado,
-        metodo_pago, dominio_web, carta_recogida, pdf_url, estado_contrato, fecha_congelamiento
+        metodo_pago, dominio_web, carta_recogida, fotos_urls, estado_contrato, fecha_congelamiento
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'ENVIADO', ?)
       ON DUPLICATE KEY UPDATE 
         total_cobrado = VALUES(total_cobrado),
-        pdf_url = VALUES(pdf_url),
+        fotos_urls = VALUES(fotos_urls),
+        carta_recogida = VALUES(carta_recogida),
         estado_contrato = 'ENVIADO'
     `;
 

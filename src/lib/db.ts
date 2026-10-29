@@ -102,6 +102,7 @@ export async function initDatabase(): Promise<void> {
       metodo_pago VARCHAR(50) NOT NULL,
       dominio_web VARCHAR(150) NULL,
       carta_recogida TINYINT(1) DEFAULT 0,
+      fotos_urls TEXT NULL,
       pdf_url TEXT NULL,
       estado_contrato VARCHAR(25) DEFAULT 'ENVIADO',
       whatsapp_message_id VARCHAR(100) NULL,
@@ -114,6 +115,13 @@ export async function initDatabase(): Promise<void> {
   `;
 
   await queryWithRetry(createTableQuery);
+
+  // Asegurar que la columna fotos_urls exista si la tabla ya había sido creada antes
+  try {
+    await queryWithRetry(`ALTER TABLE contratos_emitidos ADD COLUMN fotos_urls TEXT NULL AFTER carta_recogida`);
+  } catch (e: any) {
+    // Si ya existe (código ER_DUP_FIELDNAME), ignorar
+  }
   dbInitialized = true;
   console.log('[DB] Tabla contratos_emitidos verificada/creada.');
 }

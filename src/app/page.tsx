@@ -910,53 +910,61 @@ export default function ContratoGeneradorPage() {
                     </div>
                   </div>
 
-                  {/* Captura de Fotos de Menú */}
-                  {currentConfig.esGastro && (
-                    <div className="pt-3 border-t border-neutral-200 space-y-2">
-                      <label className="block text-xs font-semibold text-neutral-700">
-                        📸 Captura de Carta / Fotos del Menú:
-                      </label>
+                  {/* Captura de Fotos / Archivos (Disponible para todas las categorías) */}
+                  <div className="pt-3 border-t border-neutral-200 space-y-2">
+                    <label className="block text-xs font-semibold text-neutral-700">
+                      {currentConfig.esGastro
+                        ? '📸 Captura de Carta / Fotos del Menú:'
+                        : tipoContrato.startsWith('GUIALOJA-HOTEL')
+                        ? '📸 Fotos del Hotel (Habitaciones, Fachada, Logo):'
+                        : tipoContrato === 'GUIALOJA-TUR-OPE'
+                        ? '📸 Material Promocional / Fotos de Rutas o Tours:'
+                        : '📸 Archivos / Material del Negocio (Logo, Fotos, etc.):'}
+                    </label>
 
-                      <div className="flex flex-wrap items-center gap-2">
-                        <input
-                          type="file"
-                          ref={fileInputRef}
-                          accept="image/*"
-                          capture="environment"
-                          multiple
-                          onChange={handleFileUpload}
-                          className="hidden"
-                          id="file-menu-upload"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => fileInputRef.current?.click()}
-                          disabled={uploadingImage}
-                          className="py-2 px-3 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-semibold rounded-lg border border-neutral-300 flex items-center gap-1.5 transition cursor-pointer"
-                        >
-                          <Camera className="w-3.5 h-3.5" />
-                          {uploadingImage ? 'Subiendo imagen...' : 'Tomar Foto / Seleccionar Menú'}
-                        </button>
-                      </div>
-
-                      {menuFotos.length > 0 && (
-                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 pt-2">
-                          {menuFotos.map((url, i) => (
-                            <div key={i} className="relative group border border-neutral-300 rounded-lg overflow-hidden bg-neutral-100 aspect-square">
-                              <img src={url} alt={`Carta ${i}`} className="w-full h-full object-cover" />
-                              <button
-                                type="button"
-                                onClick={() => setMenuFotos((prev) => prev.filter((_, idx) => idx !== i))}
-                                className="absolute top-1 right-1 p-1 bg-neutral-900/80 text-white rounded-md hover:bg-rose-600 transition"
-                              >
-                                <Trash2 className="w-3 h-3" />
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                    <div className="flex flex-wrap items-center gap-2">
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        accept="image/*"
+                        capture="environment"
+                        multiple
+                        onChange={handleFileUpload}
+                        className="hidden"
+                        id="file-menu-upload"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploadingImage}
+                        className="py-2 px-3 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-semibold rounded-lg border border-neutral-300 flex items-center gap-1.5 transition cursor-pointer"
+                      >
+                        <Camera className="w-3.5 h-3.5" />
+                        {uploadingImage ? 'Subiendo archivo...' : 'Tomar Foto / Subir Archivo'}
+                      </button>
+                      <span className="text-[11px] text-neutral-500">
+                        {menuFotos.length === 0 ? 'Sin archivos adjuntos' : `${menuFotos.length} archivo(s) guardado(s)`}
+                      </span>
                     </div>
-                  )}
+
+                    {menuFotos.length > 0 && (
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 pt-2">
+                        {menuFotos.map((url, i) => (
+                          <div key={i} className="relative group border border-neutral-300 rounded-lg overflow-hidden bg-neutral-100 aspect-square">
+                            <img src={url} alt={`Archivo ${i}`} className="w-full h-full object-cover" />
+                            <button
+                              type="button"
+                              onClick={() => setMenuFotos((prev) => prev.filter((_, idx) => idx !== i))}
+                              className="absolute top-1 right-1 p-1 bg-neutral-900/80 text-white rounded-md hover:bg-rose-600 transition"
+                              title="Eliminar foto"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
 
                   {tipoContrato === 'GUIALOJA-GASTRO-CAFE' && (
                     <div className="pt-2">
